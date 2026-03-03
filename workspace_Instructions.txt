@@ -1,0 +1,85 @@
+
+1.voice_pkg: 语音包
+
+2.imu_ros1_device：imu驱动包
+
+3.ultralytics_ros-noetic-devel：yolo包（人形跟踪、手势识别）
+
+4.urdf_pkg：urdf文件包
+
+5.car_camera
+└── src
+    ├── image_follow_center.cpp：    跟着中心点的颜色跟随
+    ├── image_follow_depth.cpp：     做完单目测距的颜色跟随
+    ├── image_recognize_hsv.cpp       
+    ├── image_sub.cpp：              订阅图像数据
+    └── image_view.cpp：             查看摄像头
+
+6.yolo11_run
+├── model   
+│   ├── gesture_result：               手势识别模型
+│   └── humanoid_result：              人形追踪模型
+├── msg
+│   ├── detection_result.msg：         手势识别消息类型
+│   └── humanoid_result.msg：          人形追踪消息类型
+├── package.xml
+├── src
+│   ├── gesture_recognize.cpp：        手势识别节点
+│   ├── humanoid_recognize.cpp：       人形追踪识别节点
+│   ├── yolo11_gesture.cpp：           手势识别源文件
+│   └── yolo11_humanoid.cpp：          人形追踪源文件
+│   └── gesture_recognize_drive.cpp：  手势识别
+    └── humanoid_tracking_drive.cpp:   人性追踪
+
+7.navigatino_pkg：导航包
+├── CMakeLists.txt:
+├── config:
+│   ├── ekf.yaml:
+│   └── nav.rviz:
+├── launch:
+│   ├── amcl.launch:
+│   ├── amcl_test.launch:
+│   ├── map_save.launch:
+│   ├── map_server.launch:
+│   ├── move_base.launch:
+│   ├── nav_integration.launch:
+│   ├── nav.sh:
+│   └── slam_gmapping.launch:
+├── map
+│   ├── map.pgm
+│   └── map.yaml
+├── package.xml
+└── param
+    ├── base_local_planner_params.yaml:
+    ├── costmap_common_params.yaml:
+    ├── dwa_local_planner_params.yaml:
+    ├── global_costmap_params.yaml:
+    ├── local_costmap_params.yaml:
+    └── teb_local_planner_params.yaml:
+
+8.ros_arduino_bridge-indigo-devel：下位机 + 上位机通信）
+ros_arduino_bridge：                                        源功能包
+ros_arduino_firmware：                                      底层驱动相关文件。整个arduino底层都在这
+ros_arduino_msgs：                                          存储消息类型
+ros_arduino_python：                                        封装了节点，有节点发布、订阅实现（里程计信息）
+├── CMakeLists.txt
+├── config
+│   ├── arduino_params.yaml
+│   └── my_arduino_params.yaml：                            通信配置
+├── Instructions.txt
+├── launch
+│   └── arduino.launch：                                    总启动文件
+├── nodes
+│   └── arduino_node.py：
+├── package.xml
+├── scripts
+│   └── cmd_test.py
+├── setup.py
+└── src
+    └── ros_arduino_python
+        ├── arduino_driver.py：                             串口通信
+        ├── arduino_sensors.py：                            融合传感器（不用）
+        ├── base_controller.py：                            驱动（订阅cmd_vel、发布odom）
+        └── __init__.py
+        
+9.waterplus_map_tools: 多点导航功能包。其中waterplus_map_tools_plugin.xml是插件

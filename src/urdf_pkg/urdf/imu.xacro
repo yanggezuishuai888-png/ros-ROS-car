@@ -1,0 +1,41 @@
+<robot name="mycar" xmlns:xacro="http://wiki.ros.org/xacro">
+    <!-- 1.自身尺寸（板子：长31mm，宽24mm，高度忽略但给个薄值便于显示） -->
+    <xacro:property name="imu_size_x" value="0.031" />
+    <xacro:property name="imu_size_y" value="0.024" />  
+    <xacro:property name="imu_size_z" value="0.0016" />  <!-- 厚1.6mm -->
+
+    <!-- 2.距离base_link位姿（你给的偏移） -->
+    <xacro:property name="joint_imu_x" value="-0.005" />
+    <xacro:property name="joint_imu_y" value="-0.027" />
+    <xacro:property name="joint_imu_z" value="-${base_h/2 - imu_size_z}" />  <!-- 相对于主体（盒子）来说在底部,然后imu又整块在上方 => 加上imu高度-->
+
+    <!-- 3.IMU link -->
+    <link name="imu_link">
+    <visual>
+        <geometry>
+        <box size="${imu_size_x} ${imu_size_y} ${imu_size_z}" />
+        </geometry>
+        <!-- 与base_link同向 -->
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <material name="gray">
+        <color rgba="0.5 0.5 0.5 0.8" />
+        </material>
+    </visual>
+
+    <collision>
+        <geometry>
+        <box size="${imu_size_x} ${imu_size_y} ${imu_size_z}" />
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </collision>
+
+    </link>
+
+    <!-- 4.IMU joint -->
+    <joint name="imu2base" type="fixed">
+    <parent link="base_link" />
+    <child link="imu_link" />
+    <origin xyz="${joint_imu_x} ${joint_imu_y} ${joint_imu_z}" rpy="0 0 0" />
+    </joint>
+
+</robot>

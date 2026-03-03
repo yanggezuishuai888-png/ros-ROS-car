@@ -1,0 +1,28 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/rm/workspace/badminton_grab/devel/include/**",
+        "/home/rm/workspace/mechanical_arm/devel/include/**",
+        "/home/rm/workspace/voice/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/rm/workspace/mechanical_arm/src/ar_track_alvar/ar_track_alvar/include/**",
+        "/home/rm/workspace/mechanical_arm/src/arm_api_control/include/**",
+        "/home/rm/workspace/mechanical_arm/src/arm_camera/include/**",
+        "/home/rm/workspace/mechanical_arm/src/arm_ikfast_arm_plugin/include/**",
+        "/home/rm/workspace/badminton_grab/src/ultralytics_ros/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

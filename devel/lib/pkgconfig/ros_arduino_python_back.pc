@@ -1,0 +1,8 @@
+prefix=/home/rm/workspace/four_wheel_differential_cal/devel
+
+Name: ros_arduino_python_back
+Description: Description of ros_arduino_python_back
+Version: 0.2.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

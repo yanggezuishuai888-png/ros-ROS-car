@@ -1,0 +1,28 @@
+<launch>
+    <!-- 语音识别 -->
+    <node pkg="voice_pkg" type="asr.py" name="asr" required="true" output="screen"/>
+
+    <!-- 语音合成 -->
+        <!-- 定义模型文件夹参数 -->
+    <arg name="model_folder" default="vits-icefall-zh-aishell3" />
+    <arg name="sid" default="89" />
+        <!-- TTS 节点 -->
+    <node pkg="voice_pkg" type="tts.py" name="tts" required="true" output="screen">  
+        <!-- 模型路径 -->
+        <param name="vits_model" value="$(find voice_pkg)/models/$(arg model_folder)/model.onnx" />
+        <param name="vits_lexicon" value="$(find voice_pkg)/models/$(arg model_folder)/lexicon.txt" />
+        <param name="vits_tokens" value="$(find voice_pkg)/models/$(arg model_folder)/tokens.txt" />
+        <!-- <param name="vits_dict_dir" value="$(find voice_pkg)/models/$(arg model_folder)/dict" /> -->
+        <param name="tts_rule_fsts" value="$(find voice_pkg)/models/$(arg model_folder)/phone.fst,$(find voice_pkg)/models/$(arg model_folder)/date.fst,$(find voice_pkg)/models/$(arg model_folder)/number.fst" />
+        <!-- 其他参数 -->
+        <param name="sid" value="$(arg sid)" />
+        <param name="debug" value="false" />
+        <param name="provider" value="cpu" />
+        <param name="num_threads" value="4" />
+        <param name="speed" value="1.0" />
+        <!-- 控制是否保存音频 -->
+        <param name="save_sound" value="false" />
+        <!-- 输入文本 ROS 话题 -->
+        <param name="text_topic" value="asr_result" />
+    </node>
+</launch>

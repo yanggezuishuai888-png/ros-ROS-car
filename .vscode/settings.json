@@ -1,0 +1,17 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/rm/workspace/badminton_grab/devel/lib/python3/dist-packages",
+        "/home/rm/workspace/mechanical_arm/devel/lib/python3/dist-packages",
+        "/home/rm/workspace/voice/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages",
+        "/usr/local/lib/python3/dist-packages/"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/rm/workspace/badminton_grab/devel/lib/python3/dist-packages",
+        "/home/rm/workspace/mechanical_arm/devel/lib/python3/dist-packages",
+        "/home/rm/workspace/voice/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages",
+        "/usr/local/lib/python3/dist-packages/"
+    ],
+    "cmake.sourceDirectory": "/home/rm/workspace/four_wheel_differential_cal/src/yolo11_run"
+}

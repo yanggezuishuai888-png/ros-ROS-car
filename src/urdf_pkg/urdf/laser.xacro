@@ -1,0 +1,67 @@
+<robot name="mycar" xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <!-- 1.封装雷达和底座的自身尺寸-->
+    <xacro:property name="support_l" value="0.09" />
+    <xacro:property name="support_w" value="0.065" />
+    <xacro:property name="support_h" value="0.03" />
+    <xacro:property name="laser_radius" value="0.03" />
+    <xacro:property name="laser_length" value="0.02" />
+
+    <!-- 2.雷达和底座偏移量-->
+    <xacro:property name="joint_support_z" value="${base_h/2 + support_h/2}" />
+    <xacro:property name="joint_laser_y" value="-0.0174" />
+    <xacro:property name="joint_laser_z" value="${support_h/2 + laser_length/2}" />
+
+    <!-- 3.支架  --> 
+    <link name="support">
+        <visual>
+            <geometry>
+                <box size="${support_l} ${support_w} ${support_h}" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 ${PI/2}" />
+            <material name="support_color">
+                <color rgba="1 0 0 0.5" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${support_l} ${support_w} ${support_h}" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 ${PI/2}" />
+        </collision>
+    </link>
+
+    <joint name="support2base" type="fixed">
+        <parent link="base_link" />
+        <child link="support" />
+        <origin xyz="0 0 ${joint_support_z}" rpy="0 0 0 " />
+
+    </joint>
+
+    <!-- 4.雷达  --> 
+        <link name="laser">
+        <visual>
+            <geometry>
+                <cylinder radius="${laser_radius}" length="${laser_length}" />
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 0.5" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${laser_radius}" length="${laser_length}" />
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 0.5" />
+            </material>
+        </collision>
+    </link>
+
+    <joint name="laser2support" type="fixed">
+        <parent link="support" />
+        <child link="laser" />
+        <origin xyz="0 ${joint_laser_y} ${joint_laser_z}" rpy="0 0 ${PI/2} " />
+
+    </joint>
+</robot>

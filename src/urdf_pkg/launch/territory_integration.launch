@@ -1,0 +1,11 @@
+<launch>
+    <!-- urdf -->
+    <include file="$(find urdf_pkg)/launch/car.launch" />
+
+    <!-- 雷达 -->
+    <include file="$(find ydlidar_ros_driver)/launch/X3.launch" />
+
+    <!-- 底盘 -->
+    <include file="$(find ros_arduino_python)/launch/arduino.launch" />
+</launch>
+

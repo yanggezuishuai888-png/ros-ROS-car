@@ -1,0 +1,30 @@
+# 设置命名空间
+TrajectoryPlannerROS:
+
+# Robot Configuration Parameters
+  max_vel_x: 0.5 # X 方向最大速度
+  min_vel_x: 0.1 # X 方向最小速度
+
+  max_vel_theta:  1.0 # 最大角速度设置
+  min_vel_theta: -1.0 # 最小角速度
+  min_in_place_vel_theta: 1.0  # 机器人原地旋转的角速度。一般可以大一点
+
+  acc_lim_x: 1.0 # X 加速限制
+  acc_lim_y: 0.0 # Y 加速限制
+  acc_lim_theta: 0.6 # 角速度加速限制
+
+# 目标公差
+#   机器人移动到目标点时位置和方向是有偏差的。下面两个设置的就是允许误差
+  xy_goal_tolerance: 0.10  # 位置允许偏差
+  yaw_goal_tolerance: 0.05  # 方向允许误差
+
+# 是否是全向移动机器人（麦克纳姆轮那种才设置为ture）
+  holonomic_robot: false
+
+# 前进模拟参数
+#   用于设置机器人的全局路径和本地路径贴合度的（本地路径是否和全局路径一样）
+#   这些参数也是通过算法算出来的，一般来说如果相差较大，可以将sim_time设置大一点（1.8）
+  sim_time: 1.5
+  vx_samples: 18
+  vtheta_samples: 20
+  sim_granularity: 0.05

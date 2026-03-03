@@ -1,0 +1,2 @@
+car_camera:imu_ros1_device:navigation_pkg:ros_arduino_bridge-indigo-devel/ros_arduino_bridge:ros_arduino_bridge-indigo-devel/ros_arduino_firmware:ros_arduino_bridge-indigo-devel/ros_arduino_msgs:ros_arduino_bridge-indigo-devel/ros_arduino_python:ros_arduino_bridge-indigo-devel/ros_arduino_python_back:ultralytics_ros-noetic-devel:urdf_pkg:voice_pkg:waterplus_map_tools:yolo11_run
+-DCATKIN_DEVEL_PREFIX=/home/rm/workspace/four_wheel_differential_cal/devel -DCMAKE_INSTALL_PREFIX=/home/rm/workspace/four_wheel_differential_cal/install -G Unix Makefiles

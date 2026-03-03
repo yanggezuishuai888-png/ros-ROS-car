@@ -1,0 +1,8 @@
+prefix=/home/rm/workspace/four_wheel_differential_cal/install
+
+Name: urdf_pkg
+Description: Description of urdf_pkg
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

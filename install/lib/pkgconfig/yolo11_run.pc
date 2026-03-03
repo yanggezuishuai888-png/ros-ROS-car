@@ -1,0 +1,8 @@
+prefix=/home/rm/workspace/four_wheel_differential_cal/install
+
+Name: yolo11_run
+Description: Description of yolo11_run
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: roscpp sensor_msgs std_msgs message_runtime

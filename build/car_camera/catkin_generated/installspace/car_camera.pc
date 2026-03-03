@@ -1,0 +1,8 @@
+prefix=/home/rm/workspace/four_wheel_differential_cal/install
+
+Name: car_camera
+Description: Description of car_camera
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: roscpp std_msgs geometry_msgs yolo11_run

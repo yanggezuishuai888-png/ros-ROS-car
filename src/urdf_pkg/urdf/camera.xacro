@@ -1,0 +1,35 @@
+<robot name="mycar" xmlns:xacro="http://wiki.ros.org/xacro">
+    <!--摄像头-->
+
+    <!-- 1.自身尺寸 -->
+    <xacro:property name="camera_radius" value="0.006" /> 
+    <xacro:property name="camera_length" value="0.015" /> 
+    <!-- 2.距离base_link位姿-->
+    <xacro:property name="joint_camera_x" value="${base_l/2 + camera_length/2}" />  
+    <xacro:property name="joint_camera_y" value="${base_w/2 - 0.068}" />
+    <xacro:property name="joint_camera_z" value="${-base_h/2 + 0.025}" />  <!-- 小车底盘高度 / 2 + 摄像头高度 / 2-->
+    <!-- 3..相机link -->
+    <link name="camera">
+        <visual>
+            <geometry>
+                <cylinder radius="${camera_radius}" length="${camera_length}" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 ${PI/2} 0" />
+            <material name="black">  
+                <color rgba="0 0 0 0.8" />
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${motor_radius}" length="${motor_length}" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 ${PI/2} 0" />
+            </collision>
+    </link>
+    <!-- 3..相机joint -->
+    <joint name="camera2base" type="fixed" >
+        <parent link="base_link" />
+        <child link="camera" />
+        <origin xyz="${joint_camera_x} ${joint_camera_y} ${joint_camera_z}" rpy="0 0 0" />
+    </joint>
+</robot>

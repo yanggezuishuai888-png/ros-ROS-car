@@ -1,0 +1,200 @@
+<?xml version="1.0"?>
+<robot name="my_car" xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <!-- 
+        1.思路：
+            一个base_footprint，上面加一个主体，贴四个马达，马达连接电机。
+        2.结构：
+            （1）base_footprint
+            （2）base_link 主体（长方体）
+            （3）四个电机（motor_link）
+            （4）四个轮子（wheel）
+    -->
+
+    <!-- 1. footprint 小球半径 -->
+    <xacro:property name="footprint_radius" value="0.001" />
+
+    <!-- 2. 主体参数（你给的） -->
+    <!-- 主体：长0.24m，宽0.175m，高0.065m -->
+    <xacro:property name="base_l" value="0.24" />
+    <xacro:property name="base_w" value="0.175" />
+    <xacro:property name="base_h" value="0.065" />
+
+    <!-- 3.一些常量 -->
+    <xacro:property name="PI" value="3.1415926" />
+
+    <!-- (1)主体中心相对地面的高度-->
+    <!-- 底部到地面 = 轮子直径
+         主体中心 = 轮子直径 + 主体高度/2
+    -->
+    <xacro:property name="base_center_z" value="${wheel_radius*2 + base_h/2}" />
+
+    <!-- (2)轮子参数 -->
+    <!-- 半径 0.065m；宽0.025m -->
+    <xacro:property name="wheel_radius" value="0.0325" />
+    <xacro:property name="wheel_width"  value="0.025" />
+
+    <!-- 轮子在 y 方向（前后）的偏移：
+         就是贴着电机即可，要带上一个轮胎宽度
+    -->
+    <xacro:property name="wheel_y_offset" value="${wheel_width/2}" />
+
+    <!-- (3)电机尺寸。长度是带轴了的-->
+    <xacro:property name="motor_radius" value="0.015" />  
+    <xacro:property name="motor_length" value="0.0725" /> 
+
+    <!-- 电机中心距离 base_link x方向偏移
+         base_l/2 - 轮子半径
+    -->
+    <xacro:property name="motor_x_offset" value="${base_l/2 - wheel_radius}" /> 
+    <!-- 电机中心相对 base_link 的 y 偏移：
+         这里简单取在主体侧面附近：base_w/2 - 电机（带轴）长/2 + 实际主体和轮子间距离0.005
+         轮子会比电机再往外 2.5mm
+    -->
+    <xacro:property name="motor_y_offset" value="${base_w/2 - motor_length/2  + 0.005}" />
+
+    <!-- 电机中心距离 base_link 的 z 偏移
+         base_h/2 + 电机半径        
+    -->
+    <xacro:property name="motor_z_offset" value="${-(base_h/2 + motor_radius)}" />
+    <!-- =========================
+         1. base_footprint
+       ========================= -->
+    <link name="base_footprint">
+        <visual>
+            <geometry>
+                <sphere radius="${footprint_radius}" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <material name="footprint_color">
+                <color rgba="0 0 1 0.5" />
+            </material>
+        </visual>
+    </link>
+
+    <!-- =========================
+         2. 主体 base_link
+       ========================= -->
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <!-- 主体用 box 表示 -->
+                <box size="${base_l} ${base_w} ${base_h}" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <material name="base_color">
+                <color rgba="1.0 0.5 0.2 0.8" />
+            </material>
+        </visual>
+
+        <collision>
+            <geometry>
+                <box size="${base_l} ${base_w} ${base_h}" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </collision>
+    </link>
+
+    <!-- base_footprint -> base_link （固定） -->
+    <joint name="base_footprint_to_base_link" type="fixed">
+        <parent link="base_footprint" />
+        <child  link="base_link" />
+        <!-- base_link 中心在 z = base_center_z -->
+        <origin xyz="0 0 ${base_center_z}" rpy="0 0 0" />
+    </joint>
+
+    <!-- =========================
+         3. 电机 + 轮子 宏封装 (结构B)
+       ========================= -->
+    <!--
+        name : 轮组名称前缀（front_left, front_right 等）
+        xs   : x 方向符号（前 +1，后 -1）
+        ys   : y 方向符号（左 +1，右 -1）
+    -->
+    <xacro:macro name="motor_wheel_unit" params="name xs ys zs">
+
+        <!-- 3-1. 电机 link -->
+        <link name="${name}_motor">
+            <visual>
+                <geometry>
+                    <!-- 电机用小长方体表示 -->
+                    <cylinder radius="${motor_radius}" length="${motor_length}" />
+                </geometry>
+                <origin xyz="0 0 0" rpy="${PI/2} 0 0" />
+                <material name="motor_color">
+                    <color rgba="0.2 0.2 0.2 1.0" />
+                </material>
+            </visual>
+
+            <collision>
+                <geometry>
+                    <cylinder radius="${motor_radius}" length="${motor_length}" />
+                </geometry>
+                <origin xyz="0 0 0" rpy="${PI/2} 0 0" />
+            </collision>
+        </link>
+
+        <!-- base_link -> 电机 (固定关节)，电机紧贴主体侧面 -->
+        <joint name="${name}_motor_joint" type="fixed">
+            <parent link="base_link" />
+            <child  link="${name}_motor" />
+            <!--
+                x: 前后偏移 ±motor_x_offset（和轮子差不多位置）
+                y: 左右偏移 ±motor_y_offset（在主体侧面）
+                z: motor_z_offset
+            -->
+            <origin xyz="${motor_x_offset * xs} ${motor_y_offset * ys} ${motor_z_offset * zs}" rpy="0 0 0" />
+        </joint>
+
+        <!-- 3-2. 轮子 link -->
+        <link name="${name}_wheel">
+            <visual>
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_width}" />
+                </geometry>
+                <!-- 轮子转轴沿 y 轴，圆柱默认沿 z 轴，绕 x 轴旋转 90° -->
+                <origin xyz="0 0 0" rpy="${PI/2} 0 0" />
+                <material name="wheel_color">
+                    <color rgba="0 0 0 1.0" />
+                </material>
+            </visual>
+
+            <collision>
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_width}" />
+                </geometry>
+                <origin xyz="0 0 0" rpy="${PI/2} 0 0" />
+            </collision>
+        </link>
+
+        <!-- 电机 -> 轮子 (连续关节) -->
+        <joint name="${name}_wheel_joint" type="continuous">
+            <parent link="${name}_motor" />
+            <child  link="${name}_wheel" />
+            <!--
+                相对电机的偏移：
+                x: 与电机相同 (0)
+                y: 从电机位置再往外长一点：wheel_y_offset - motor_y_offset
+                z: 轮子中心相对 base_link 的 z 偏移（电机 z 和 base_link 一样，所以这里直接用）
+            -->
+            <origin xyz="0 ${(wheel_y_offset + motor_length/2) * ys} 0" rpy="0 0 0" />
+            <!-- 绕 y 轴转动 -->
+            <axis xyz="0 1 0" />
+        </joint>
+
+    </xacro:macro>
+
+    <!-- =========================
+         4. 四个电机+轮子实例
+       ========================= -->
+    <!-- ROS 坐标：x 向前，y 向左，z 向上 -->
+    <!-- 前左：x+, y+ -->
+    <xacro:motor_wheel_unit name="front_left"  xs="1"  ys="1" zs="1" />
+    <!-- 前右：x+, y- -->
+    <xacro:motor_wheel_unit name="front_right" xs="1"  ys="-1" zs="1" />
+    <!-- 后左：x-, y+ -->
+    <xacro:motor_wheel_unit name="rear_left"   xs="-1" ys="1" zs="1" />
+    <!-- 后右：x-, y- -->
+    <xacro:motor_wheel_unit name="rear_right"  xs="-1" ys="-1" zs="1" />
+
+</robot>

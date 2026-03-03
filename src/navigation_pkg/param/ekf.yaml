@@ -1,0 +1,27 @@
+frequency: 30                                   # ekf输出更新频率 范围（2-~50Hz）
+sensor_timeout: 0.2                             # 传感器“多久没来数据就认为失效”（秒）
+two_d_mode: true                                # 将除x y yaw外的量置为0（地面小车开）
+
+map_frame: map                                  # map坐标系
+odom_frame: odom                                # 里程计坐标系
+base_link_frame: base_footprint                 # ekf发步的基坐标系（odom -> base_footprint）
+world_frame: odom                               # ekf发布的父坐标系（odom -> base_footprint
+publish_tf: true                                # 发布tf关系
+
+# 方案：odom提供x  y  vx，imu提供vyaw、yaw
+
+odom0: /odom                                    # 里程计话题
+odom0_config: [true,  true,  false,             # 里程计的所有数据，true表示提供出来给ekf进行融合。选择：x  y  yaw  vx  vyaw。顺序：x y z（位置）   
+               false, false, false,             # roll pitch yaw(朝向)
+               true,  false, false,             # vx vy vz（前进速度）
+               false, false, true,              # vroll vpitch vyaw（角速度）
+               false, false, false]             # ax ay az（加速度）
+
+imu0: /imu/data_raw                             # imu数据话题
+imu0_config: [false, false, false,              # imu的所有数据，true表示提供出来给ekf进行融合。选择：vyaw。顺序同上
+              false, false, true,               # ekf通过角速度积分得到(朝向)
+              false, false, false,
+              false, false, true,               
+              false, false, false]
+
+imu0_remove_gravitational_acceleration: false   # 当融合加速度时（true），会从加速度里减去重力分量

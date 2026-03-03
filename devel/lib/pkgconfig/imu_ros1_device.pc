@@ -1,0 +1,8 @@
+prefix=/home/rm/workspace/four_wheel_differential_cal/devel
+
+Name: imu_ros1_device
+Description: Description of imu_ros1_device
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

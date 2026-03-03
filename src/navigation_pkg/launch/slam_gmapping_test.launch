@@ -1,0 +1,14 @@
+<launch>
+    <!-- rviz -->
+    <node pkg="rviz" name="rviz" type="rviz" args="-d $(find navigation_pkg)/config/slam.rviz" />
+    <!-- slam -->
+    <include file="$(find navigation_pkg)/launch/slam_gmapping.launch" />
+    <!-- 底盘 -->
+    <include file="$(find urdf_pkg)/launch/territory_integration.launch" />
+    <!-- imu -->
+    <include file="$(find imu_ros1_device)/launch/ybimu_display.launch" />
+    <!-- EKF（融合imu）-->
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_local" output="screen">
+        <rosparam command="load" file="$(find navigation_pkg)/param/ekf.yaml"/>
+      </node>
+</launch>

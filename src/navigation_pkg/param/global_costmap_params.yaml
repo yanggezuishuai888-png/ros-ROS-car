@@ -1,0 +1,12 @@
+# 命名空间
+global_costmap:
+  global_frame: map                 # 地图坐标系
+  robot_base_frame: base_footprint  # 机器人坐标系
+  
+  update_frequency: 1.0             # 代价地图更新频率。他不怎么更新，因此频率较低，减少资源损耗
+  publish_frequency: 1.0            # 代价地图的发布频率
+  
+  inflation_radius: 0.1             # 膨胀半径
+  transform_tolerance: 1            # 这整个tf坐标系的时间戳容忍时间，一般为1s即可.  # laser --> base_footprint --> odom
+  
+  static_map: true                  # 是否使用一个加载静态地图来初始化全局代价地图。

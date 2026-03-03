@@ -1,0 +1,22 @@
+<launch>
+    <!-- 获取功能包路径 -->
+    <arg name="pkg_path" default="$(find yolo11_run)" />
+    <!-- 模型路径 -->
+    <arg name="param_path" default="$(arg pkg_path)/model/best_pnnx.ncnn.param" />
+    <arg name="bin_path" default="$(arg pkg_path)/model/best_pnnx.ncnn.bin" />
+    <!-- 话题 -->
+    <arg name="image_sub_topic" default="/usb_cam/image_rect_color" />
+    <arg name="image_pub_topic" default="/yolo_image" />
+
+    <!-- 摄像头 -->
+    <include file="$(find car_camera)/launch/camer_start.launch" />
+    <!-- yolo -->
+    <node pkg="yolo11_run" name="yolo11" type="yolo11_node">
+        <param name="param_path" value="$(arg param_path)" />
+        <param name="bin_path" value="$(arg bin_path)" />
+        <param name="image_sub_topic" value="$(arg image_sub_topic)" />
+        <param name="image_pub_topic" value="$(arg image_pub_topic)" />
+    </node> 
+
+</launch>
+
